@@ -1,0 +1,39 @@
+From 5d8408fe216404a1b8e9dd7ff196199497a93ff3 Mon Sep 17 00:00:00 2001
+From: Edmunt Pienkowsky <roed@onet.eu>
+Date: Fri, 31 Aug 2018 07:18:17 +0000
+Subject: [PATCH] CMake - correct symlinks creation
+
+Honor DESTDIR environment variable during symlink creation
+---
+ CMakeLists.txt | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 03c8fc4c..697c4cea 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -2059,17 +2059,17 @@ function(install_manpage_symlink SOURCE TARGET MANDIR)
+         "message(STATUS \"Symlinking: ${CMAKE_INSTALL_PREFIX}/${MANDIR}/${SOURCE} to ${TARGET}\")
+          execute_process(
+             COMMAND \"${CMAKE_COMMAND}\" \"-E\" \"remove\" \"${TARGET}\"
+-            WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX}/${MANDIR}
++            WORKING_DIRECTORY \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/${MANDIR}
+           )
+          execute_process(
+             COMMAND ${LINK_COMMAND}
+-            WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX}/${MANDIR}
++            WORKING_DIRECTORY \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/${MANDIR}
+             RESULT_VARIABLE EXIT_STATUS
+           )
+           if(NOT EXIT_STATUS EQUAL 0)
+-              message(FATAL_ERROR \"Could not create symbolic link from ${CMAKE_INSTALL_PREFIX}/${MANDIR}/${SOURCE} to ${TARGET}\")
++              message(FATAL_ERROR \"Could not create symbolic link from \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/${MANDIR}/${SOURCE} to ${TARGET}\")
+           endif()
+-          set(CMAKE_INSTALL_MANIFEST_FILES \${CMAKE_INSTALL_MANIFEST_FILES} ${CMAKE_INSTALL_PREFIX}/${MANDIR}/${TARGET})")
++          set(CMAKE_INSTALL_MANIFEST_FILES \${CMAKE_INSTALL_MANIFEST_FILES} \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/${MANDIR}/${TARGET})")
+ endfunction(install_manpage_symlink)
+ 
+ set(MAN1_NOEXPAND pcap-config.1)
+-- 
+2.18.0
+

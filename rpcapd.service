@@ -1,0 +1,11 @@
+[Unit]
+Description=Rpcap capture daemon
+After=network.target
+Conflicts=rpcapd.socket
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/rpcapd -n -p 2002
+
+[Install]
+WantedBy=multi-user.target
