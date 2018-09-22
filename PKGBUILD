@@ -1,13 +1,10 @@
-# Maintainer:  Bartłomiej Piotrowski <bpiotrowski@mirantis.com>
-# Based on: http://www.archlinux.org/packages/core/x86_64/libpcap
-
 pkgname=libpcap-remote
-provides=(libpcap)
-conflicts=(libpcap)
 pkgver=1.9.0
-pkgrel=1
+pkgrel=2
+provides=("libpcap=${pkgver}")
+conflicts=('libpcap')
 pkgdesc='A system-independent interface for user-level packet capture'
-arch=('x86_64')
+arch=('i686' 'x86_64' 'aarch64' 'armv7h' 'armv6h')
 url='http://www.tcpdump.org/'
 license=('BSD')
 depends=('glibc' 'libnl' 'sh' 'libusbx' 'dbus')
